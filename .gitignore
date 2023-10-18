@@ -1,0 +1,21 @@
+# Logs
+logs
+*.log
+.DS_Store
+
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+dist
+
+build/Release
+
+# Dependency directory
+node_modules
+
+# Optional npm cache directory
+.npm
