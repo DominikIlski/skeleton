@@ -4,10 +4,10 @@ class User {
   static TABLE_NAME = 'User';
 
   constructor(
-    private id: string,
     private name: string,
     private email: string,
-    private hash: string,
+    private hash?: string,
+    private id?: string,
   ) {
     this.id = uuidv4();
   }

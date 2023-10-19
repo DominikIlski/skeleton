@@ -41,9 +41,10 @@ class UserController implements ControllerCompatible {
   }
 
   async create(req: Request, res: Response): Promise<void> {
+
     try {
-      const data = req.body;
-      const newUser = await this.userService.create(data);
+      const { name, email } = req.body;
+      const newUser = await this.userService.create(new User(name, email));
 
       res.status(201).json(newUser);
     } catch (error) {
@@ -84,7 +85,6 @@ class UserController implements ControllerCompatible {
       res.status(500).json({ message: 'Internal Server Error' });
     }
   }
-
 }
 
 export default UserController;
