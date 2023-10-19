@@ -1,13 +1,15 @@
 import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
-import { User } from './user.entity'; //static field requires this
-import { UserController, UserRepository, UserService } from '.';
+import UserController from './user.controller';
+import DynamoDBTable from '../services/DynamoDbTable';
+import User from './user.entity';
+import UserService from './user.service';
 
-const userRepo = new UserRepository(User.TABLE_NAME);
+const userRepo = new DynamoDBTable<User>(User.TABLE_NAME);
 const userService = new UserService(userRepo);
 const userController = new UserController(userService);
 
-export const userRouter = Router();
+const userRouter = Router();
 
 userRouter.get(
   '/:id',
@@ -43,3 +45,5 @@ userRouter.delete(
     await userController.delete(req, res);
   }),
 );
+
+export default userRouter;

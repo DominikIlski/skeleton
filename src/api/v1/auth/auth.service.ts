@@ -1,24 +1,15 @@
-import { IUserRepository, User } from ".";
-import { IUserService } from "./interfaces/user.service.interface";
+import { IBasicRepository, IBasicService } from "../basicInterfaces";
+import { User } from "../user";
 
-export class UserService implements IUserService {
-  constructor(private databaseRepo: IUserRepository) {
+
+export class UserService implements IBasicService<User> {
+  constructor(private databaseRepo: IBasicRepository<User>) {
     this.databaseRepo = databaseRepo;
   }
 
   findOne = async (userId: string) => {
     try {
       const user = await this.databaseRepo.read(userId);
-      return user;
-    } catch (error) {
-      console.error('Error in getUser service:', error);
-      throw new Error('Failed to get user');
-    }
-  };
-
-  findOneByEmail = async (email: string) => {
-    try {
-      const user = await this.databaseRepo.readByEmail(email);
       return user;
     } catch (error) {
       console.error('Error in getUser service:', error);
@@ -76,3 +67,4 @@ export class UserService implements IUserService {
     }
   };
 }
+

@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import ControllerCompatible from '../interfaces/controller.interface';
-import Book from './book.entity';
-import ServiceCompatible from '../interfaces/service.interface';
+import { IBasicController, IBasicService } from '../basicInterfaces';
+import { Book } from '.';
 
-class BookController implements ControllerCompatible {
-  constructor(private bookService: ServiceCompatible<Book>) {}
+
+export class BookController implements IBasicController {
+  constructor(private bookService: IBasicService<Book>) {}
 
   async findOne(req: Request, res: Response): Promise<void> {
     try {
@@ -40,7 +40,8 @@ class BookController implements ControllerCompatible {
     }
   }
 
-  async create(req: Request, res: Response): Promise<void> {``
+  async create(req: Request, res: Response): Promise<void> {
+    ``;
     try {
       const { name, pages } = req.body;
       const newBook = await this.bookService.create(new Book(name, pages));
@@ -86,4 +87,3 @@ class BookController implements ControllerCompatible {
   }
 }
 
-export default BookController;

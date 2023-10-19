@@ -1,9 +1,9 @@
 import { config, DynamoDB } from 'aws-sdk';
-import DatabaseCompatible from '../interfaces/database.interface';
+import { IBasicRepository } from '../basicInterfaces';
 
-class DynamoDBTable<T> implements DatabaseCompatible<T> {
+export class DynamoDBTable<T> implements IBasicRepository<T> {
   readonly tableName: string;
-  private readonly dynamoDB: DynamoDB.DocumentClient;
+  protected readonly dynamoDB: DynamoDB.DocumentClient;
 
   constructor(tableName: string) {
     config.update({
@@ -100,4 +100,3 @@ class DynamoDBTable<T> implements DatabaseCompatible<T> {
   }
 }
 
-export default DynamoDBTable;

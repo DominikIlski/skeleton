@@ -1,4 +1,4 @@
-interface ServiceCompatible<T> {
+export interface IBasicService<T> {
   create(data: T): Promise<T>;
   findOne(id: string): Promise<T | null>;
   findAll(): Promise<T[] | null>;
@@ -6,4 +6,3 @@ interface ServiceCompatible<T> {
   deleteOne(id: string): Promise<T | null>;
 }
 
-export default ServiceCompatible;

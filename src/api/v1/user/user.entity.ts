@@ -1,15 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
+export class User {
+  static TABLE_NAME = 'users';
 
-class User {
-  static TABLE_NAME = 'User';
+  id: string;
+  name: string;
+  email: string;
+  hash: string | undefined;
 
-  constructor(
-    private name: string,
-    private email: string,
-    private hash?: string,
-    private id?: string,
-  ) {
-    this.id = uuidv4();
+  constructor(name: string, email: string, hash?: string, id?: string) {
+    this.id = id || uuidv4();
+    this.name = name;
+    this.email = email;
+    this.hash = hash;
   }
 }
-export default User;

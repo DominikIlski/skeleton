@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
-import ControllerCompatible from '../interfaces/controller.interface';
-import User from './user.entity';
-import ServiceCompatible from '../interfaces/service.interface';
+import { IBasicController, IBasicService } from '../basicInterfaces';
+import { User } from '.';
 
-class UserController implements ControllerCompatible {
-  constructor(private userService: ServiceCompatible<User>) {}
+export class UserController implements IBasicController {
+  constructor(private userService: IBasicService<User>) {}
 
   async findOne(req: Request, res: Response): Promise<void> {
     try {
@@ -86,4 +85,3 @@ class UserController implements ControllerCompatible {
   }
 }
 
-export default UserController;

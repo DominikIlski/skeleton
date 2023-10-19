@@ -4,34 +4,43 @@ service: skeleton
 provider:
   name: aws
   runtime: nodejs14.x
-  region: us-east-1 
+  region: us-east-1
 
 resources:
   Resources:
     UserTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: User
+        TableName: users
+        ProvisionedThroughput:
+          ReadCapacityUnits: 2
+          WriteCapacityUnits: 2
         AttributeDefinitions:
           - AttributeName: id
-            AttributeType: S #
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: EmailIndex
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
 
     BookTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: Book
+        TableName: books
+        ProvisionedThroughput:
+          ReadCapacityUnits: 2
+          WriteCapacityUnits: 2
         AttributeDefinitions:
           - AttributeName: id
-            AttributeType: S 
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1

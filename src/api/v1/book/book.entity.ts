@@ -1,8 +1,8 @@
 import { int } from 'aws-sdk/clients/datapipeline';
 import { v4 as uuidv4 } from 'uuid';
 
-class Book {
-  static TABLE_NAME = 'Book';
+export class Book {
+  static TABLE_NAME = 'books';
 
   constructor(
     private name: string,
@@ -12,4 +12,3 @@ class Book {
     this.id = uuidv4();
   }
 }
-export default Book;

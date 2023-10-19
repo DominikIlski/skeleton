@@ -1,15 +1,14 @@
 import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
-import BookController from './book.controller';
-import DynamoDBTable from '../servieces/DynamoDbTable';
-import Book from './book.entity';
-import BookService from './book.service';
+import { DynamoDBTable } from '../services/DynamoDbTable';
+import { Book } from './book.entity';
+import { BookController, BookService } from '.';
 
 const bookRepo = new DynamoDBTable<Book>(Book.TABLE_NAME);
 const bookService = new BookService(bookRepo);
 const bookController = new BookController(bookService);
 
-const bookRouter = Router();
+export const bookRouter = Router();
 
 bookRouter.get(
   '/:id',
@@ -45,5 +44,3 @@ bookRouter.delete(
     await bookController.delete(req, res);
   }),
 );
-
-export default bookRouter;
