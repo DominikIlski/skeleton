@@ -1,21 +1,21 @@
 import { Request, Response } from 'express';
 import ControllerCompatible from '../interfaces/controller.interface';
-import User from './user.entity';
+import Book from './book.entity';
 import ServiceCompatible from '../interfaces/service.interface';
 
-class UserController implements ControllerCompatible {
-  constructor(private userService: ServiceCompatible<User>) {}
+class BookController implements ControllerCompatible {
+  constructor(private bookService: ServiceCompatible<Book>) {}
 
   async findOne(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.params.id;
+      const bookId = req.params.id;
 
-      const user = await this.userService.findOne(userId);
+      const book = await this.bookService.findOne(bookId);
 
-      if (!user) {
-        res.status(404).json({ message: 'User not found' });
+      if (!book) {
+        res.status(404).json({ message: 'Book not found' });
       } else {
-        res.status(200).json(user);
+        res.status(200).json(book);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -25,14 +25,14 @@ class UserController implements ControllerCompatible {
 
   async findAll(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.params.id;
+      const bookId = req.params.id;
 
-      const user = await this.userService.findOne(userId);
+      const book = await this.bookService.findOne(bookId);
 
-      if (!user) {
-        res.status(404).json({ message: 'User not found' });
+      if (!book) {
+        res.status(404).json({ message: 'Book not found' });
       } else {
-        res.status(200).json(user);
+        res.status(200).json(book);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -40,12 +40,12 @@ class UserController implements ControllerCompatible {
     }
   }
 
-  async create(req: Request, res: Response): Promise<void> {
+  async create(req: Request, res: Response): Promise<void> {``
     try {
-      const { name, email } = req.body;
-      const newUser = await this.userService.create(new User(name, email));
+      const { name, pages } = req.body;
+      const newBook = await this.bookService.create(new Book(name, pages));
 
-      res.status(201).json(newUser);
+      res.status(201).json(newBook);
     } catch (error) {
       console.error('Error:', error);
       res.status(500).json({ message: 'Internal Server Error' });
@@ -53,15 +53,15 @@ class UserController implements ControllerCompatible {
   }
   async update(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.params.id;
+      const bookId = req.params.id;
       const updatedData = req.body;
 
-      const updatedUser = await this.userService.update(userId, updatedData);
+      const updatedBook = await this.bookService.update(bookId, updatedData);
 
-      if (!updatedUser) {
-        res.status(404).json({ message: 'User not found' });
+      if (!updatedBook) {
+        res.status(404).json({ message: 'Book not found' });
       } else {
-        res.status(200).json(updatedUser);
+        res.status(200).json(updatedBook);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -70,14 +70,14 @@ class UserController implements ControllerCompatible {
   }
   async delete(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.params.id;
+      const bookId = req.params.id;
 
-      const result = await this.userService.deleteOne(userId);
+      const result = await this.bookService.deleteOne(bookId);
 
       if (result) {
         res.status(204).send();
       } else {
-        res.status(404).json({ message: 'User not found' });
+        res.status(404).json({ message: 'Book not found' });
       }
     } catch (error) {
       console.error('Error:', error);
@@ -86,4 +86,4 @@ class UserController implements ControllerCompatible {
   }
 }
 
-export default UserController;
+export default BookController;

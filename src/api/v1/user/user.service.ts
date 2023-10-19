@@ -1,12 +1,11 @@
 import User from './user.entity';
-import ServiceCompatible from '../interfaces/user.serevice.interface';
+import ServiceCompatible from '../interfaces/service.interface';
 import DatabaseCompatible from '../interfaces/database.interface';
 
 class UserService implements ServiceCompatible<User> {
   constructor(private databaseRepo: DatabaseCompatible<User>) {
     this.databaseRepo = databaseRepo;
   }
-  tableName = 'User';
 
   findOne = async (userId: string) => {
     try {
@@ -20,7 +19,6 @@ class UserService implements ServiceCompatible<User> {
 
   findAll = async () => {
     try {
-      console.log('running the task');
       const user = await this.databaseRepo.read();
       return user;
     } catch (error) {

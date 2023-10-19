@@ -1,28 +1,19 @@
 import { config, DynamoDB } from 'aws-sdk';
 import DatabaseCompatible from '../interfaces/database.interface';
 
-
 class DynamoDBTable<T> implements DatabaseCompatible<T> {
-  private static instance: DynamoDBTable<any>;
-  private readonly tableName: string;
+  readonly tableName: string;
   private readonly dynamoDB: DynamoDB.DocumentClient;
 
-  private constructor(tableName: string) {
+  constructor(tableName: string) {
     config.update({
       accessKeyId: process.env.accessKeyId,
       secretAccessKey: process.env.secretAccessKey,
       region: process.env.region,
     });
-    console.log(config);
+
     this.tableName = tableName;
     this.dynamoDB = new DynamoDB.DocumentClient();
-  }
-
-  public static getInstance<T>(tableName: string): DynamoDBTable<T> {
-    if (!DynamoDBTable.instance) {
-      DynamoDBTable.instance = new DynamoDBTable<T>(tableName);
-    }
-    return DynamoDBTable.instance;
   }
 
   async create(item: T): Promise<T> {
@@ -38,13 +29,13 @@ class DynamoDBTable<T> implements DatabaseCompatible<T> {
       throw new Error(`Failed to create item: ${error}`);
     }
   }
+
   async read(): Promise<T[] | null>;
   async read(id: string): Promise<T | null>;
   async read(id?: string): Promise<T[] | T | null> {
     if (id) {
       return this.readSingleItem(id);
     } else {
-      console.log('readd all items');
       return this.readAllItems();
     }
   }
@@ -101,7 +92,6 @@ class DynamoDBTable<T> implements DatabaseCompatible<T> {
     };
 
     try {
-      console.log('table name', this.tableName);
       const data = await this.dynamoDB.scan(params).promise();
       return data.Items as T[];
     } catch (error) {

@@ -5,7 +5,7 @@ import DynamoDBTable from '../servieces/DynamoDbTable';
 import User from './user.entity';
 import UserService from './user.service';
 
-const userRepo = DynamoDBTable.getInstance<User>(User.TABLE_NAME);
+const userRepo = new DynamoDBTable<User>(User.TABLE_NAME);
 const userService = new UserService(userRepo);
 const userController = new UserController(userService);
 
