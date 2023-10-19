@@ -42,9 +42,13 @@ export class BookController implements IBasicController {
   async create(req: Request, res: Response): Promise<void> {
     try {
       const { name, pages } = req.body;
-      const newBook = await this.bookService.create(new Book(name, pages));
 
-      res.status(201).json(newBook);
+      if (name && pages) {
+        const newBook = await this.bookService.create(new Book(name, pages));
+        res.status(201).json(newBook);
+      } else {
+        res.status(400).json({ message: 'Invalid data' });
+      }
     } catch (error) {
       console.error('Error:', error);
       res.status(500).json({ message: 'Internal Server Error' });

@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { Request } from 'express-jwt';
 import { User, IUserService } from '../user';
 import { IAuthController } from '../basicInterfaces';
 import { signUserToken } from './utils';
@@ -81,8 +82,8 @@ export class AuthController implements IAuthController {
       }
 
       const passwordMatch = await bcrypt.compare(password, user?.hash || '');
-
-      if (!passwordMatch) {
+      console.log(req.auth?.userId);
+      if (!passwordMatch || user.id !== req.auth?.userId) {
         return res.status(401).json({ message: 'Authentication failed' });
       }
       const hash = await bcrypt.hash(newPassword, 10);

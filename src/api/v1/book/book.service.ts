@@ -28,7 +28,6 @@ export class BookService implements IBasicService<Book> {
   create = async (bookData: Book) => {
     try {
       const newBook = await this.databaseRepo.create(bookData);
-      console.log(bookData);
       return newBook;
     } catch (error) {
       console.error('Error in createBook service:', error);

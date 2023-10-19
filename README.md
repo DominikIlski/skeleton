@@ -1,6 +1,6 @@
 # Skeleton Challenge
 
-Welcome to the Skeleton Challenge project. This is a simple skills evaluation project that demonstrates how to build a Node.js backend application with TypeScript and AWS DynamoDB. The project includes user authentication, CRUD operations for a "User" entity, and Postman collections for testing.
+Welcome to the Skeleton Challenge project. This is a simple skills evaluation project that demonstrates how to build a Node.js backend application with TypeScript and AWS DynamoDB. The project includes user authentication, CRUD operations for a "Book" entity, and Postman collections for testing.
 
 ## Table of Contents
 
@@ -9,9 +9,10 @@ Welcome to the Skeleton Challenge project. This is a simple skills evaluation pr
 - [Getting Started](#getting-started)
 - [Authentication Flow](#authentication-flow)
 - [User Entity](#user-entity)
+- [Book Entity](#book-entity)
 - [API Endpoints](#api-endpoints)
 - [Testing with Postman](#testing-with-postman)
-- [Contributing](#contributing)
+- [Notes](#notes)
 
 ## Project Overview
 
@@ -21,18 +22,7 @@ Welcome to the Skeleton Challenge project. This is a simple skills evaluation pr
 
 ## Project Structure
 
-The project follows a structured directory layout:
-
-- `src/`: Contains the application source code.
-  - `controllers/`: Contains controllers for handling HTTP requests.
-  - `models/`: Contains the data models for the application.
-  - `routes/`: Defines API routes.
-  - `services/`: Implements business logic.
-- `dist/`: Output directory for compiled TypeScript code.
-- `postman/`: Includes Postman collections for testing endpoints.
-- `tsconfig.json`: TypeScript configuration file.
-- `package.json`: Project dependencies and scripts.
-- `README.md`: This documentation file.
+Project has been packaged by Feature.
 
 ## Getting Started
 
@@ -50,7 +40,7 @@ The project follows a structured directory layout:
 
 3. Set up AWS credentials in your environment or AWS CLI configuration.
 
-4. Deploy dynamoDB to your AWS account
+4. Deploy DynamoDB to your AWS account:
 
    ```bash
    npm install serverless --save-dev
@@ -78,7 +68,15 @@ The "User" entity represents user data with the following properties:
 - `id`: User ID (UUID).
 - `username`: User's username.
 - `email`: User's email address.
-- `password`: User's hashed password.
+- `hash`: User's hashed password.
+
+## User Entity
+
+The "Book" entity represents user data with the following properties:
+
+- `id`: Book ID (UUID).
+- `name`: Book's title.
+- `pages`: Books's pages count.
 
 ## API Endpoints
 
@@ -87,12 +85,19 @@ The project includes the following API endpoints:
 - `POST /api/v1/auth/signup`: Signup a new user.
 - `POST /api/v1/auth/login`: Login and obtain an access token.
 - `POST /api/v1/auth/reset-password`: Request a password reset.
-- `POST /api/v1/auth/reset-password/:token`: Reset the password with a valid token.
 - `GET /api/v1/users`: Get a list of all users.
 - `GET /api/v1/users/:id`: Get a user by ID.
+- `GET /api/v1/users/`: Get all users.
 - `POST /api/v1/users`: Create a new user.
 - `PUT /api/v1/users/:id`: Update a user by ID.
 - `DELETE /api/v1/users/:id`: Delete a user by ID.
+- `GET /api/v1/books/:id`: Get a book by ID.
+- `GET /api/v1/books/` Get all books.
+- `POST /api/v1/books`: Create a new book.
+- `PUT /api/v1/books/:id`: Update a book by ID.
+- `DELETE /api/v1/books/:id`: Delete a book by ID.
+
+## Security Considerations
 
 ## Testing with Postman
 
@@ -102,22 +107,12 @@ The project includes Postman collections (`postman/`) to test all API endpoints,
 
 2. Use the collections to send requests and test the API endpoints.
 
-## Contributing
-
-Contributions are welcome! If you'd like to contribute to the project, please follow these steps:
-
-1. Fork the repository.
-
-2. Create a new branch for your feature or bug fix.
-
-3. Make your changes and commit them.
-
-4. Push your changes to your fork.
-
-5. Create a pull request with a clear description of your changes.
-
-Thank you for contributing to the project!
-
-
 # Notes
+
 Special security concerns were ommited on puropus, like token invalidation after password change.
+Search endpoint was ommited as dynamoDB specificity. There is no search option, you can querry only on certain index.
+There is very little of input validation as it was not a requirment of the task, so to recieve desired results, input correct data. Also there is no check if id mach
+
+# Notes to the project
+
+In my honest opinion using DB hosten on docker container would also be a intersting opion and allow for usage of ORM likes, and aslo enabling search endopint.

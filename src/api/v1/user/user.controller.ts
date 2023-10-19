@@ -10,7 +10,7 @@ export class UserController implements IBasicController {
       const userId = req.params.id;
 
       const user = await this.userService.findOne(userId);
-
+      delete user?.hash;
       if (!user) {
         res.status(404).json({ message: 'User not found' });
       } else {
@@ -24,14 +24,16 @@ export class UserController implements IBasicController {
 
   async findAll(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.params.id;
+      const users = await this.userService.findAll();
 
-      const user = await this.userService.findOne(userId);
-
-      if (!user) {
+      if (!users) {
         res.status(404).json({ message: 'User not found' });
       } else {
-        res.status(200).json(user);
+        const usersWithoutHash = users.map((us) => ({
+          ...us,
+          hash: null,
+        }));
+        res.status(200).json(usersWithoutHash);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -84,4 +86,3 @@ export class UserController implements IBasicController {
     }
   }
 }
-
