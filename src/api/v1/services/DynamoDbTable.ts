@@ -40,18 +40,16 @@ export class DynamoDBTable<T> implements IBasicRepository<T> {
     }
   }
 
-  async update(id: string, item: T): Promise<T> {
+  async update(id: string, item: T): Promise<T | null> {
     const params = {
       TableName: this.tableName,
-      Key: { id },
-      UpdateExpression: 'SET :data',
-      ExpressionAttributeValues: { ':data': item },
-      ReturnValues: 'ALL_NEW',
+      Item: { id, ...item },
+      
     };
 
     try {
-      const updatedData = await this.dynamoDB.update(params).promise();
-      return updatedData.Attributes as T;
+      await this.dynamoDB.put(params).promise();
+      return await this.readSingleItem(id);
     } catch (error) {
       throw new Error(`Failed to update item: ${error}`);
     }
@@ -99,4 +97,3 @@ export class DynamoDBTable<T> implements IBasicRepository<T> {
     }
   }
 }
-

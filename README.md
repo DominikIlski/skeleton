@@ -117,3 +117,7 @@ Contributions are welcome! If you'd like to contribute to the project, please fo
 5. Create a pull request with a clear description of your changes.
 
 Thank you for contributing to the project!
+
+
+# Notes
+Special security concerns were ommited on puropus, like token invalidation after password change.

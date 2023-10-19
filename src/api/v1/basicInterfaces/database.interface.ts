@@ -3,7 +3,6 @@ export interface IBasicRepository<T> {
   read(): Promise<T[] | null>;
   read(id: string): Promise<T | null>;
   read(id?: string): Promise<T[] | T | null>;
-  update(id: string, item: T): Promise<T>;
+  update(id: string, item: T): Promise<T | null>;
   delete(id: string): Promise<T | null>;
 }
-

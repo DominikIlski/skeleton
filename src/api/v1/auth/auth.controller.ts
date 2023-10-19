@@ -12,7 +12,7 @@ export class AuthController implements IAuthController {
   async signup(req: Request, res: Response) {
     try {
       const { name, email, password } = req.body;
-      if (!email || !password ) {
+      if (!email || !password) {
         return res.status(400).json({ message: 'Missing email or password' });
       }
 
@@ -86,7 +86,6 @@ export class AuthController implements IAuthController {
         return res.status(401).json({ message: 'Authentication failed' });
       }
       const hash = await bcrypt.hash(newPassword, 10);
-
       await this.userService.update(user.id, {
         ...user,
         hash,

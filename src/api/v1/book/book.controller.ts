@@ -54,7 +54,6 @@ export class BookController implements IBasicController {
     try {
       const bookId = req.params.id;
       const { name, pages } = req.body;
-
       const updatedBook = await this.bookService.update(
         bookId,
         new Book(name, pages, bookId),
