@@ -21,3 +21,5 @@ node_modules
 .npm
 
 .env
+.serverless
+launch.json

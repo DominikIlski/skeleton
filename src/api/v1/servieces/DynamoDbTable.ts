@@ -1,11 +1,19 @@
-import { DynamoDB } from 'aws-sdk';
+import { config, DynamoDB } from 'aws-sdk';
+import DatabaseCompatible from '../interfaces/database.interface';
 
-class DynamoDBTable<T> {
+
+class DynamoDBTable<T> implements DatabaseCompatible<T> {
   private static instance: DynamoDBTable<any>;
   private readonly tableName: string;
   private readonly dynamoDB: DynamoDB.DocumentClient;
 
   private constructor(tableName: string) {
+    config.update({
+      accessKeyId: process.env.accessKeyId,
+      secretAccessKey: process.env.secretAccessKey,
+      region: process.env.region,
+    });
+    console.log(config);
     this.tableName = tableName;
     this.dynamoDB = new DynamoDB.DocumentClient();
   }
@@ -30,18 +38,14 @@ class DynamoDBTable<T> {
       throw new Error(`Failed to create item: ${error}`);
     }
   }
-
-  async read(id: string): Promise<T | null> {
-    const params = {
-      TableName: this.tableName,
-      Key: { id },
-    };
-
-    try {
-      const data = await this.dynamoDB.get(params).promise();
-      return data.Item as T;
-    } catch (error) {
-      throw new Error(`Failed to read item: ${error}`);
+  async read(): Promise<T[] | null>;
+  async read(id: string): Promise<T | null>;
+  async read(id?: string): Promise<T[] | T | null> {
+    if (id) {
+      return this.readSingleItem(id);
+    } else {
+      console.log('readd all items');
+      return this.readAllItems();
     }
   }
 
@@ -62,16 +66,46 @@ class DynamoDBTable<T> {
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<T | null> {
+    const params = {
+      TableName: this.tableName,
+      Key: { id },
+    };
+    const entity = await this.read(id);
+
+    try {
+      await this.dynamoDB.delete(params).promise();
+      return entity;
+    } catch (error) {
+      throw new Error(`Failed to delete item: ${error}`);
+    }
+  }
+
+  private async readSingleItem(id: string): Promise<T | null> {
     const params = {
       TableName: this.tableName,
       Key: { id },
     };
 
     try {
-      await this.dynamoDB.delete(params).promise();
+      const data = await this.dynamoDB.get(params).promise();
+      return data.Item as T | null;
     } catch (error) {
-      throw new Error(`Failed to delete item: ${error}`);
+      throw new Error(`Failed to read item: ${error}`);
+    }
+  }
+
+  private async readAllItems(): Promise<T[]> {
+    const params = {
+      TableName: this.tableName,
+    };
+
+    try {
+      console.log('table name', this.tableName);
+      const data = await this.dynamoDB.scan(params).promise();
+      return data.Items as T[];
+    } catch (error) {
+      throw new Error(`Failed to read items: ${error}`);
     }
   }
 }
