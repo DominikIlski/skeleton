@@ -35,6 +35,7 @@ Project has been packaged by Feature.
 2. Install dependencies:
 
    ```bash
+   npm install -g typescript
    npm install
    ```
 
@@ -49,8 +50,16 @@ Project has been packaged by Feature.
    ```
 
 5. Start the application:
+
    ```bash
+   npm run build
    npm start
+   ```
+
+6. For development run:
+
+   ```
+   npm run dev
    ```
 
 ## Authentication Flow
