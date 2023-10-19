@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { IBasicController, IBasicService } from '../basicInterfaces';
 import { Book } from '.';
 
-
 export class BookController implements IBasicController {
   constructor(private bookService: IBasicService<Book>) {}
 
@@ -41,7 +40,6 @@ export class BookController implements IBasicController {
   }
 
   async create(req: Request, res: Response): Promise<void> {
-    ``;
     try {
       const { name, pages } = req.body;
       const newBook = await this.bookService.create(new Book(name, pages));
@@ -55,9 +53,12 @@ export class BookController implements IBasicController {
   async update(req: Request, res: Response): Promise<void> {
     try {
       const bookId = req.params.id;
-      const updatedData = req.body;
+      const { name, pages } = req.body;
 
-      const updatedBook = await this.bookService.update(bookId, updatedData);
+      const updatedBook = await this.bookService.update(
+        bookId,
+        new Book(name, pages, bookId),
+      );
 
       if (!updatedBook) {
         res.status(404).json({ message: 'Book not found' });
@@ -86,4 +87,3 @@ export class BookController implements IBasicController {
     }
   }
 }
-

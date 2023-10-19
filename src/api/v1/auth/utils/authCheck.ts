@@ -1,7 +1,7 @@
-import { expressjwt  } from "express-jwt";
+import { expressjwt, Request } from 'express-jwt';
 import jwt from 'jsonwebtoken';
-import { Request } from 'express';
-const  getTokenFromHeader = (req: Request) => {
+
+const getTokenFromHeader = (req: Request) => {
   if (
     (req.headers.authorization &&
       req.headers.authorization.split(' ')[0] === 'Token') ||
@@ -12,17 +12,17 @@ const  getTokenFromHeader = (req: Request) => {
   }
 
   return undefined;
-}
+};
 
 const JWT_SECRET = process.env.JWT_SECRET;
-if(!JWT_SECRET) {
-  throw Error('No secret established')
+if (!JWT_SECRET) {
+  throw Error('No secret established');
 }
 
-export const auth = {
+export const authMiddlware = {
   required: expressjwt({
     secret: JWT_SECRET,
-    algorithms: ["HS256"],
+    algorithms: ['HS256'],
     getToken: getTokenFromHeader,
   }),
 };
@@ -30,7 +30,7 @@ export const auth = {
 export const signUserToken = (userId: string) => {
   const token = jwt.sign({ userId }, JWT_SECRET, {
     expiresIn: '1h',
-    algorithm: "HS256",
+    algorithm: 'HS256',
   });
   return token;
-}
+};

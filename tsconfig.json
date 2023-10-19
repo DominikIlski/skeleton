@@ -13,6 +13,7 @@
     "removeComments": true
   },
   "include": ["src/**/*.ts"],
+  "typeRoots": ["./src/types/express.d.ts" ],
   "exclude": ["node_modules"],
   "baseUrl": "./",
   "paths": {

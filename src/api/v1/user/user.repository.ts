@@ -8,12 +8,16 @@ export class UserRepository
   async readByEmail(email: string): Promise<User | null> {
     const params = {
       TableName: this.tableName,
-      Key: { email },
+      IndexName: 'EmailIndex',
+      KeyConditionExpression: 'email = :value',
+      ExpressionAttributeValues: {
+        ':value': email,
+      },
     };
-
     try {
-      const data = await this.dynamoDB.get(params).promise();
-      return data.Item as User | null;
+      const data = await this.dynamoDB.query(params).promise();
+      const users = data.Items as User[] | null;
+      return users?.[0] || null;
     } catch (error) {
       throw new Error(`Failed to read item: ${error}`);
     }

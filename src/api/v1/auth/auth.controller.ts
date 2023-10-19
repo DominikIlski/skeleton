@@ -12,7 +12,6 @@ export class AuthController implements IAuthController {
   async signup(req: Request, res: Response) {
     try {
       const { name, email, password } = req.body;
-
       if (!email || !password ) {
         return res.status(400).json({ message: 'Missing email or password' });
       }

@@ -12,9 +12,7 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: users
-        ProvisionedThroughput:
-          ReadCapacityUnits: 2
-          WriteCapacityUnits: 2
+        BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
@@ -35,9 +33,7 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: books
-        ProvisionedThroughput:
-          ReadCapacityUnits: 2
-          WriteCapacityUnits: 2
+        BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
