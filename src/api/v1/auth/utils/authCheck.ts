@@ -38,5 +38,4 @@ export const signUserToken = (userId: string) => {
 export const unlessPaths = [
   '/api/v1/auth/login',
   '/api/v1/auth/signup',
-  '/api/v1/auth/reset-password',
 ];
