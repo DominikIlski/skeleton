@@ -1,32 +1,40 @@
 import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
-import { AuthController } from './auth.controller';
 import { Request } from 'express-jwt';
-import { User, UserRepository, UserService } from '../user';
+import { IAuthController } from '../basicInterfaces';
+import { IBasicRouter } from '../basicInterfaces/router.interface';
 
-const userRepo = new UserRepository(User.TABLE_NAME);
-const userService = new UserService(userRepo);
-const authController = new AuthController(userService);
+export class AuthRouter implements IBasicRouter {
+  readonly router;
 
-export const authRouter = Router();
+  constructor(private authController : IAuthController) {
+    this.router = Router();
+  }
 
-authRouter.post(
-  '/signup',
-  asyncHandler(async (req: Request, res) => {
-    await authController.signup(req, res);
-  }),
-);
+  setupRouter() {
+    this.router.post(
+      '/signup',
+      asyncHandler(async (req: Request, res) => {
+        await this.authController.signup(req, res);
+      }),
+    );
 
-authRouter.post(
-  '/login',
-  asyncHandler(async (req: Request, res) => {
-    await authController.login(req, res);
-  }),
-);
+    this.router.post(
+      '/login',
+      asyncHandler(async (req: Request, res) => {
+        await this.authController.login(req, res);
+      }),
+    );
 
-authRouter.put(
-  '/reset-password',
-  asyncHandler(async (req: Request, res) => {
-    await authController.resetPassword(req, res);
-  }),
-);
+    this.router.put(
+      '/reset-password',
+      asyncHandler(async (req: Request, res) => {
+        await this.authController.resetPassword(req, res);
+      }),
+    );
+    return this.router;
+  }
+
+}
+
+

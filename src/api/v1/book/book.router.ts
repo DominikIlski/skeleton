@@ -1,51 +1,51 @@
-import { Router, Response } from 'express';
-import { Request } from 'express-jwt';
-
+import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
-import { DynamoDBTable } from '../services/DynamoDbTable';
-import { Book } from './book.entity';
-import { BookController, BookService } from '.';
+import { Request, Response } from 'express-serve-static-core';
+import { IBasicRouter } from '../basicInterfaces';
+import { BookController } from '.';
 
-const bookRepo = new DynamoDBTable<Book>(Book.TABLE_NAME);
-const bookService = new BookService(bookRepo);
-const bookController = new BookController(bookService);
+export class BookRouter implements IBasicRouter {
+  readonly router;
 
-export const bookRouter = Router();
+  constructor(private controller: BookController) {
+    this.router = Router();
+  }
 
-bookRouter.get(
-  '/:id',
-  asyncHandler(async (req: Request, res: Response) => {
-    console.log(req.body.userId);
-    await bookController.findOne(req, res);
-  }),
-);
+  setupRouter(): Router {
+    this.router.get(
+      '/:id',
+      asyncHandler(async (req: Request, res: Response) => {
+        await this.controller.findOne(req, res);
+      }),
+    );
 
-bookRouter.get(
-  '/',
-  asyncHandler(async (req: Request, res) => {
-    console.log(req.body.userId);
-    await bookController.findAll(req, res);
-  }),
-);
+    this.router.get(
+      '/',
+      asyncHandler(async (req: Request, res: Response) => {
+        await this.controller.findAll(req, res);
+      }),
+    );
 
-bookRouter.post(
-  '/',
-  asyncHandler(async (req: Request, res) => {
-    console.log(req.body);
-    await bookController.create(req, res);
-  }),
-);
+    this.router.post(
+      '/',
+      asyncHandler(async (req: Request, res: Response) => {
+        await this.controller.create(req, res);
+      }),
+    );
 
-bookRouter.put(
-  '/:id',
-  asyncHandler(async (req: Request, res) => {
-    await bookController.update(req, res);
-  }),
-);
+    this.router.put(
+      '/:id',
+      asyncHandler(async (req: Request, res: Response) => {
+        await this.controller.update(req, res);
+      }),
+    );
 
-bookRouter.delete(
-  '/:id',
-  asyncHandler(async (req: Request, res) => {
-    await bookController.delete(req, res);
-  }),
-);
+    this.router.delete(
+      '/:id',
+      asyncHandler(async (req: Request, res: Response) => {
+        await this.controller.delete(req, res);
+      }),
+    );
+    return this.router;
+  }
+}

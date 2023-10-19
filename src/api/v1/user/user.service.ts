@@ -50,7 +50,7 @@ export class UserService implements IUserService {
     try {
       const existingUser = await this.databaseRepo.read(userId);
       if (!existingUser) {
-        throw new Error('User not found');
+        return null;
       }
 
       const updatedUser = await this.databaseRepo.update(userId, userData);
@@ -65,7 +65,7 @@ export class UserService implements IUserService {
     try {
       const existingUser = await this.databaseRepo.read(userId);
       if (!existingUser) {
-        throw new Error('User not found');
+        return null;
       }
 
       const deletedUser = await this.databaseRepo.delete(userId);

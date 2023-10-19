@@ -1,46 +1,53 @@
 import { Router } from 'express';
-import { Request } from 'express-jwt';
 import asyncHandler from 'express-async-handler';
-import { User } from './user.entity'; //static field requires this
-import { UserController, UserRepository, UserService } from '.';
+import { Request } from 'express-serve-static-core';
+import { IBasicRouter } from '../basicInterfaces';
+import { UserController } from '.';
 
-const userRepo = new UserRepository(User.TABLE_NAME);
-const userService = new UserService(userRepo);
-const userController = new UserController(userService);
+export class UserRouter implements IBasicRouter {
+  readonly router;
 
-export const userRouter = Router();
+  constructor(private userController: UserController) {
+    this.router = Router()
+  }
 
-userRouter.get(
-  '/:id',
-  asyncHandler(async (req: Request, res) => {
-    await userController.findOne(req, res);
-  }),
-);
+  public setupRouter(): Router {
 
-userRouter.get(
-  '/',
-  asyncHandler(async (req: Request, res) => {
-    await userController.findAll(req, res);
-  }),
-);
+    this.router.get(
+      '/:id',
+      asyncHandler(async (req: Request, res) => {
+        await this.userController.findOne(req, res);
+      }),
+    );
 
-userRouter.post(
-  '/',
-  asyncHandler(async (req: Request, res) => {
-    await userController.create(req, res);
-  }),
-);
+    this.router.get(
+      '/',
+      asyncHandler(async (req: Request, res) => {
+        await this.userController.findAll(req, res);
+      }),
+    );
 
-userRouter.put(
-  '/:id',
-  asyncHandler(async (req: Request, res) => {
-    await userController.update(req, res);
-  }),
-);
+    this.router.post(
+      '/',
+      asyncHandler(async (req: Request, res) => {
+        await this.userController.create(req, res);
+      }),
+    );
 
-userRouter.delete(
-  '/:id',
-  asyncHandler(async (req: Request, res) => {
-    await userController.delete(req, res);
-  }),
-);
+    this.router.put(
+      '/:id',
+      asyncHandler(async (req: Request, res) => {
+        await this.userController.update(req, res);
+      }),
+    );
+
+    this.router.delete(
+      '/:id',
+      asyncHandler(async (req: Request, res) => {
+        await this.userController.delete(req, res);
+      }),
+    );
+
+    return this.router;
+  }
+}

@@ -40,7 +40,7 @@ export class BookService implements IBasicService<Book> {
     try {
       const existingBook = await this.databaseRepo.read(bookId);
       if (!existingBook) {
-        throw new Error('Book not found');
+        return null;
       }
 
       const updatedBook = await this.databaseRepo.update(bookId, bookData);
@@ -55,7 +55,7 @@ export class BookService implements IBasicService<Book> {
     try {
       const existingBook = await this.databaseRepo.read(bookId);
       if (!existingBook) {
-        throw new Error('Book not found');
+        return null;
       }
 
       const deletedBook = await this.databaseRepo.delete(bookId);

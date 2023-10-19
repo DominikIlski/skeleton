@@ -19,7 +19,7 @@ if (!JWT_SECRET) {
   throw Error('No secret established');
 }
 
-export const authMiddlware = {
+export const authMiddleware = {
   required: expressjwt({
     secret: JWT_SECRET,
     algorithms: ['HS256'],
@@ -34,3 +34,9 @@ export const signUserToken = (userId: string) => {
   });
   return token;
 };
+
+export const unlessPaths = [
+  '/api/v1/auth/login',
+  '/api/v1/auth/signup',
+  '/api/v1/auth/reset-password',
+];
