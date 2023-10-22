@@ -11,6 +11,7 @@ Welcome to the Skeleton Challenge project. This is a simple skills evaluation pr
 - [User Entity](#user-entity)
 - [Book Entity](#book-entity)
 - [API Endpoints](#api-endpoints)
+- [Security Considerations](#security-considerations)
 - [Testing with Postman](#testing-with-postman)
 - [Notes](#notes)
 
@@ -22,9 +23,11 @@ Welcome to the Skeleton Challenge project. This is a simple skills evaluation pr
 
 ## Project Structure
 
-Project has been packaged by Feature.
+The project has been organized by feature.
 
 ## Getting Started
+
+To get started with this project, follow these steps:
 
 1. Clone the repository:
 
@@ -41,7 +44,7 @@ Project has been packaged by Feature.
 
 3. Set up AWS credentials in your environment or AWS CLI configuration.
 
-4. Deploy DynamoDB to your AWS account:
+4. Deploy DynamoDB to your AWS account using the Serverless Framework:
 
    ```bash
    npm install serverless --save-dev
@@ -49,14 +52,16 @@ Project has been packaged by Feature.
    sls deploy
    ```
 
-5. Start the application:
+5. Copy `.env.example` file to `.env` file and populate it with required values.
+
+6. Start the application:
 
    ```bash
    npm run build
    npm start
    ```
 
-6. For development run:
+7. For development purposes, run:
 
    ```
    npm run dev
@@ -70,6 +75,8 @@ The project includes an authentication flow with the following features:
 - Login: Authenticate a user and issue an access token.
 - Password Reset: Reset a user's password with a secure token.
 
+To ensure security, make sure to configure the `JWT_SECRET` in your environment.
+
 ## User Entity
 
 The "User" entity represents user data with the following properties:
@@ -79,49 +86,66 @@ The "User" entity represents user data with the following properties:
 - `email`: User's email address.
 - `hash`: User's hashed password.
 
-## User Entity
+## Book Entity
 
-The "Book" entity represents user data with the following properties:
+The "Book" entity represents book data with the following properties:
 
 - `id`: Book ID (UUID).
 - `name`: Book's title.
-- `pages`: Books's pages count.
+- `pages`: Books' page count.
 
 ## API Endpoints
 
-The project includes the following API endpoints:
+The project includes the following API endpoints for user and book management:
+
+### User Management
 
 - `POST /api/v1/auth/signup`: Signup a new user.
 - `POST /api/v1/auth/login`: Login and obtain an access token.
 - `POST /api/v1/auth/reset-password`: Request a password reset.
 - `GET /api/v1/users`: Get a list of all users.
 - `GET /api/v1/users/:id`: Get a user by ID.
-- `GET /api/v1/users/`: Get all users.
 - `POST /api/v1/users`: Create a new user.
 - `PUT /api/v1/users/:id`: Update a user by ID.
 - `DELETE /api/v1/users/:id`: Delete a user by ID.
+
+### Book Management
+
 - `GET /api/v1/books/:id`: Get a book by ID.
-- `GET /api/v1/books/` Get all books.
+- `GET /api/v1/books/`: Get all books.
 - `POST /api/v1/books`: Create a new book.
 - `PUT /api/v1/books/:id`: Update a book by ID.
 - `DELETE /api/v1/books/:id`: Delete a book by ID.
 
 ## Security Considerations
 
+Please note that certain security considerations, such as token invalidation after password changes and robust input validation, have been omitted for the sake of simplicity. In a production environment, it's vital to address these concerns to enhance the security of the application.
+
 ## Testing with Postman
 
-The project includes Postman collections (`postman/`) to test all API endpoints, including positive and negative test cases.
+The project includes Postman collections (`postman/`) to test all API endpoints, including positive and negative test cases. To test the API endpoints:
 
 1. Import the Postman collections into Postman.
 
 2. Use the collections to send requests and test the API endpoints.
 
-# Notes
+## Notes
 
-Special security concerns were ommited on puropus, like token invalidation after password change.
-Search endpoint was ommited as dynamoDB specificity. There is no search option, you can querry only on certain index.
-There is very little of input validation as it was not a requirment of the task, so to recieve desired results, input correct data. Also there is no check if id mach
+A few additional points to consider:
 
-# Notes to the project
+- Search functionality is not provided in the project due to DynamoDB limitations.
+- Input validation is minimal, so ensure that you provide correct data for desired results.
+- Route protection may be adjusted based on your specific requirements.
 
-In my honest opinion using DB hosten on docker container would also be a intersting opion and allow for usage of ORM likes, and aslo enabling search endopint.
+## Environment Configuration
+
+Before running the project, make sure to configure the environment variables. Copy `.env.example` a `.env` file and populate it with the following:
+
+```env
+accessKeyId=YOUR_AWS_ACCESS_KEY_ID
+secretAccessKey=YOUR_AWS_SECRET_ACCESS_KEY
+region=YOUR_AWS_REGION
+JWT_SECRET=YOUR_JWT_SECRET
+```
+
+This configuration file contains sensitive information, so keep it secure and do not expose it in public repositories.
