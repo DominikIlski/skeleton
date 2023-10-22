@@ -136,6 +136,7 @@ A few additional points to consider:
 - Search functionality is not provided in the project due to DynamoDB limitations.
 - Input validation is minimal, so ensure that you provide correct data for desired results.
 - Route protection may be adjusted based on your specific requirements.
+- Classes like router / controller / service could be generic, the similar way as the DynamoDbTable is, but they are not to show the stucture of the code and the dependencies that could be made. 
 
 ## Environment Configuration
 

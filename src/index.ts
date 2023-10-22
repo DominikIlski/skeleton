@@ -11,7 +11,7 @@ import { Book, BookController, BookRouter, BookService } from './api/v1/book/';
 import { AuthController, AuthRouter } from './api/v1/auth/';
 import { authMiddleware, unlessPaths } from './api/v1/auth/';
 import { DynamoDBTable } from './api/v1/services/DynamoDbTable';
-import { errorMiddleware } from './api/v1/middlware';
+import { errorMiddleware } from './api/v1/middleware';
 
 const port = Number(process.env.PORT || 3000);
 
